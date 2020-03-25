@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+	<div class="ui hidden divider"></div>
+	<div class="ui hidden divider"></div>
+	<div class="ui hidden divider"></div>
+	<div class="ui hidden divider"></div>
+	<div class="ui container" style="background-color: white; padding: 35px; border-radius: 6px">
+		<div class="ui fluid container" style="color: black;">
+			<div class="ui container">
+				<form method="post">
+					{% csrf_token %}
+					<div class="form-row">
+					  <div class="form-group col-md-6 mb-0">
+						{{ form.first_name|as_crispy_field }}
+					  </div>
+					  <div class="form-group col-md-6 mb-0">
+						{{ form.last_name|as_crispy_field }}
+					  </div>
+					</div>
+					<div class="form-row">
+					  <div class="form-group col-md-6 mb-0">
+						{{ form.email|as_crispy_field }}
+					  </div>
+					  <div class="form-group col-md-6 mb-0">
+						{{ form.phone_number|as_crispy_field }}
+					  </div>
+					</div>
+					{{ form.id|as_crispy_field }}
+					{{ form.password1|as_crispy_field }}
+					{{ form.password2|as_crispy_field }}
+
+					<button type="submit" class="btn btn-primary">Sign in</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<style type="text/css">
+		body {
+			background: url(../../static/img/library-849797_1920.jpg) !important;
+			opacity: 1;
+		}
+	</style>
+{% endblock content %}

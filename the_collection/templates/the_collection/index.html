@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="ui hidden divider"></div>
+     <div class="ui container" style="margin-bottom: 5px">
+        <div class="ui vertical masthead center aligned segment">
+            <div class="ui menu" style="background-color: black">
+              <a class="ui left floated browse item">
+                  <i class="inverted bars icon"></i>
+              </a>
+              <div class="ui fluid popup bottom left transition hidden" style="inset: 564.15px auto auto 1px; width: 670px;">
+                <div class="ui one column relaxed divided grid">
+                  <div class="left floated column">
+                    <h4 class="ui header">Fabrics</h4>
+                    <div class="ui link list">
+                      <a class="item">Cashmere</a>
+                      <a class="item">Linen</a>
+                      <a class="item">Cotton</a>
+                      <a class="item">Viscose</a>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="ui right floated category search item" style="background-color: white">
+
+                <div class="ui transparent icon input">
+                  <input class="prompt" type="text" placeholder="Search books...">
+                  <i class="search link icon"></i>
+                </div>
+
+              </div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}"><div class="item" style="background-color: #e05038; margin: 2px 2px 2px 4px ">
+                    <i class="inverted user circle icon"></i>
+                </div></a>
+                {% endif %}
+            </div>
+            <div class="ui hidden divider" style="margin-bottom: 2px"></div>
+        </div>
+    </div>
+    <div class="ui container">
+    <div class="ui fluid container" style="background-color: black; padding: 5px 5px 5px 5px !important; margin:0">
+    <div class="ui four column stackable center aligned grid" style="padding: 5px 5px 5px 5px !important; margin-top: 5px">
+        {% for book in books %}
+
+            <div class="ui center aligned column">
+            <div class="ui item" style="margin: 10px 0px 10px 0px;">
+              <div class="image" style="margin-bottom: 2px">
+                <div class="dmt" data-img="{{ book.cover.url }}" data-title="{{ book.book_name }}">
+                    <img src="{{ book.cover.url }}" class="img-responsive" style="height:200px; max-width:400px;">
+                </div>
+              </div>
+              <div class="content">
+                <a class="header" style="color: #cdd422">{{book.book_name}}</a>
+                <div class="meta">
+                  <span class="date" style="color: white">{{book.author}}</span>
+                </div>
+                <div class="description">
+                </div>
+              </div>
+              <div class="extra content">
+                <a>
+                </a>
+              </div>
+            </div>
+            </div>
+
+
+
+        {% endfor %}
+        <div class="ui modal" >
+              <i class="close icon"></i>
+              <div class="header">
+                Book Cover
+              </div>
+              <div class="image content">
+                <div class="ui medium image">
+                  <img id="book-img"  src="" class="img-responsive" style="height:200px; max-width:400px;">
+                </div>
+                <div class="description">
+                  <div class="ui header" >
+                      <h3 id="book-name"></h3>
+                  </div>
+                  <p>We've grabbed the following image from the <a href="https://www.gravatar.com" target="_blank">gravatar</a> image associated with your registered e-mail address.</p>
+                  <p>Is it okay to use this photo?</p>
+                </div>
+              </div>
+              <div class="actions">
+                <div class="ui black deny button">
+                  Back
+                </div>
+                <div class="ui positive right labeled icon button">
+                  Reserve
+                  <i class="checkmark icon"></i>
+                </div>
+              </div>
+        </div>
+
+
+        </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scripts %}
+    <script type="text/javascript">
+        $('.menu .browse').popup({
+            inline     : true,
+            hoverable  : true,
+            position   : 'bottom left',
+            delay: {
+              show: 300,
+              hide: 800
+            }
+          })
+        ;
+        $('.dmt').on('click', function () {
+
+            $('.ui.modal').modal('show');
+            $("#book-img").attr("src",$(this).data('img'));
+            $('#book-name').html('Title: \t' + $(this).data('title'));
+        });
+    </script>
+{% endblock scripts %}
