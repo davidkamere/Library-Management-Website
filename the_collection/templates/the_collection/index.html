@@ -46,7 +46,19 @@
             <div class="ui center aligned column">
             <div class="ui item" style="margin: 10px 0px 10px 0px;">
               <div class="image" style="margin-bottom: 2px">
-                <div class="dmt" data-img="{{ book.cover.url }}" data-title="{{ book.book_name }}">
+                <div class="dmt"
+                     data-img="{{ book.cover.url }}"
+                     data-title="{{ book.book_name }}"
+                     data-author="{{ book.author }}"
+                     data-publisher="{{ book.publisher }}"
+                     data-isbn="{{ book.ISBN }}"
+                     data-subject="{{ book.subject }}"
+                     data-language="{{ book.language }}"
+                     data-pages="{{ book.number_of_pages }}"
+                     data-format="{{ book.book_format }}"
+                     data-status="{{ book.book_status }}"
+                     data-copies="{{ book.copies}}"
+                >
                     <img src="{{ book.cover.url }}" class="img-responsive" style="height:200px; max-width:400px;">
                 </div>
               </div>
@@ -81,11 +93,24 @@
                   <div class="ui header" >
                       <h3 id="book-name"></h3>
                   </div>
-                  <p>We've grabbed the following image from the <a href="https://www.gravatar.com" target="_blank">gravatar</a> image associated with your registered e-mail address.</p>
-                  <p>Is it okay to use this photo?</p>
+                  <div class="ui two column grid">
+                    <div class="ui column">
+                    <p style="color:#0276FD">Author: <span id="book-author" style="color:black"></span></p>
+                    <p style="color:#0276FD">Publisher: <span id="book-publisher" style="color:black"></span></p>
+                    <p style="color:#0276FD">ISBN: <span id="book-ISBN" style="color:black"></span></p>
+                    <p style="color:#0276FD">Genre: <span id="book-genre" style="color:black"></span></p>
+                    </div>
+                    <div class="ui column">
+                    <p style="color:#0276FD">Language: <span id="book-language" style="color:black"></span></p>
+                    <p style="color:#0276FD">Format: <span id="book-format" style="color:black"></span></p>
+                    <p style="color:#0276FD">Pages: <span id="book-pages" style="color:black"></span></p>
+                    <p style="color:#0276FD">Status: <span id="book-status" style="color:black"></span><span id="book-copies"></span></p>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="actions">
+                <p>Is it okay to use this photo?</p>
                 <div class="ui black deny button">
                   Back
                 </div>
@@ -117,7 +142,16 @@
 
             $('.ui.modal').modal('show');
             $("#book-img").attr("src",$(this).data('img'));
-            $('#book-name').html('Title: \t' + $(this).data('title'));
+            $('#book-name').html($(this).data('title'));
+            $('#book-author').html($(this).data('author'));
+            $('#book-publisher').html($(this).data('publisher'));
+            $('#book-ISBN').html($(this).data('isbn'));
+            $('#book-genre').html($(this).data('subject'));
+            $('#book-language').html($(this).data('language'));
+            $('#book-pages').html($(this).data('pages'));
+            $('#book-format').html($(this).data('format'));
+            $('#book-status').html($(this).data('status') + "(" + $(this).data('copies') + ")" );
+
         });
     </script>
 {% endblock scripts %}
