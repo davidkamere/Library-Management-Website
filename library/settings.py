@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'the_collection',
     'users',
     'crispy_forms',
+    'dashboards',
 ]
 
 MIDDLEWARE = [
@@ -133,5 +134,6 @@ MEDIA_URL = '/media/'
 
 # Framework for crispy forms
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
 
 

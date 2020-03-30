@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from .models import Book
 from django.core.paginator import Paginator
+from django.db.models import Q
+from the_collection.models import Book
 
 
 # Create your views here.
@@ -14,5 +15,24 @@ def index(request):
     return render(request, 'the_collection/index.html', context)
 
 
-def book_details(request):
-    return render(request, 'the_collection/book_details.html')
+def search_posts(request):
+    if request.method == 'GET':
+        query = request.GET.get('q')
+
+        submitbutton = request.GET.get('submit')
+
+        if query is not None:
+            # filters
+            results = Book.objects.filter(Q(book_name__icontains=query) | Q(subject__icontains=query)).distinct()
+
+            context = {'results': results,
+                       'submitbutton': submitbutton}
+
+            return render(request, 'the_collection/search.html', context)
+
+        else:
+            return render(request, 'the_collection/index.html')
+
+    else:
+        return render(request, 'the_collection/index.html')
+

@@ -25,11 +25,13 @@
                 <form action="{% url 'the_collection:search-posts' %}" method="GET" value="{{request.GET.q}} " style="margin: 0">
                 <div class="ui transparent icon input">
                   <input type="text" class="prompt" name="q" value="{{request.GET.q}}"  placeholder="Search books..."/>
-                  <button class="circular ui icon button" style="background-color: inherit" type="submit" name="submit" value="Search">
+                  <button class="circular ui icon button" style="background-color: inherit">
                       <i class="search link icon"></i>
                   </button>
                 </div>
                 </form>
+
+		
 
 
               </div>
@@ -47,6 +49,26 @@
     <div class="ui container">
     <div class="ui fluid container" style="background-color: black; padding: 5px 5px 5px 5px !important; margin:0">
     <div class="ui four column stackable center aligned grid" style="padding: 5px 5px 5px 5px !important; margin-top: 5px">
+	<h1>results</h1>
+              	{% if submitbutton == 'Search' and request.GET.q != '' %}
+                    {% if results %}
+                    <h1>Results for <b>{{ request.GET.q }}</b></h1>
+                    <br/><br/>
+
+                    {% for result in results %}
+
+                    {{result.publisher}}
+                    <br/>
+
+                    {{result.author}}
+                    <br/>
+
+                    {% endfor %}
+                    {% else %}
+                    No search results for this query
+                    {% endif %}
+                    {% endif %}
+
         {% for book in books %}
 
             <div class="ui center aligned column">
@@ -131,7 +153,6 @@
         </div>
         </div>
     </div>
-	
 {% endblock content %}
 {% block scripts %}
     <script type="text/javascript">

@@ -8,6 +8,6 @@ app_name = 'the_collection'
 urlpatterns = [
     # Landing Page
     url(r'^$', views.index, name='index'),
-    # detail page fo a single book
-    url(r'^book/(?P<book_id>\d+)/$', views.book_details, name='book'),
+    # search
+    url(r'^search/$', views.search_posts, name='search-posts'),
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
