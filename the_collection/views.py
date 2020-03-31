@@ -23,7 +23,7 @@ def search_posts(request):
 
         if query is not None:
             # filters
-            results = Book.objects.filter(Q(book_name__icontains=query) | Q(subject__icontains=query)).distinct()
+            results = Book.objects.filter(Q(book_name__contains=query) | Q(subject__contains=query)).distinct()
 
             context = {'results': results,
                        'submitbutton': submitbutton}

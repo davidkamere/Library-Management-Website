@@ -3,22 +3,24 @@
     <div class="ui hidden divider"></div>
      <div class="ui container" style="margin-bottom: 5px">
         <div class="ui vertical masthead center aligned segment">
-            <div class="ui menu" style="background-color: black">
-              <a class="ui left floated browse item">
+            <div class="ui menu" style="background-color: inherit">
+              <a class="ui left floated browse item" style="background-color: black">
                   <i class="inverted bars icon"></i>
               </a>
-              <div class="ui fluid popup bottom left transition hidden" style="inset: 564.15px auto auto 1px; width: 670px;">
-                <div class="ui one column relaxed divided grid">
-                  <div class="left floated column">
-                    <h4 class="ui header">Fabrics</h4>
-                    <div class="ui link list">
-                      <a class="item">Cashmere</a>
-                      <a class="item">Linen</a>
-                      <a class="item">Cotton</a>
-                      <a class="item">Viscose</a>
-                    </div>
-                  </div>
-
+              <div class="ui popup bottom left transition hidden" style="inset: 564.15px auto auto 1px; width: 200px;">
+                <div class="ui secondary vertical pointing menu">
+                  <a class="centered item" href="{% url 'the_collection:index' %}">
+                    Home <i class="home icon"></i>
+                  </a>
+                  {% if user.is_authenticated %}
+                  <a class="item" href="{% url 'dashboards:user_dashboard' %}">
+                    My profile <i class="user circle icon"></i>
+                  </a>
+                    <div class="ui hidden divider"></div>
+                  <a class="item" style="color: orangered" href="{% url 'logout' %}">
+                    Log Out  <i class="sign-out alternate icon"></i>
+                  </a>
+                  {% endif %}
                 </div>
               </div>
               <div class="ui right floated category search item" style="background-color: white">
@@ -35,33 +37,56 @@
 
 
               </div>
-                {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}">
-                    <div class="item" >
-                        <i class="inverted user circle icon"></i>
-                    </div>
-                </a>
-                {% endif %}
             </div>
             <div class="ui hidden divider" style="margin-bottom: 2px"></div>
         </div>
     </div>
     <div class="ui container">
     <div class="ui fluid container" style="background-color: black; padding: 5px 5px 5px 5px !important; margin:0">
-    <div class="ui four column stackable center aligned grid" style="padding: 5px 5px 5px 5px !important; margin-top: 5px">
-	<h1>results</h1>
-              	{% if submitbutton == 'Search' and request.GET.q != '' %}
-                    {% if results %}
+                    <div class="ui hidden divider"></div>
                     <h1>Results for <b>{{ request.GET.q }}</b></h1>
                     <br/><br/>
+    <div class="ui four column stackable center aligned grid" style="padding: 5px 5px 5px 5px !important; margin-top: 5px">
+
+              	{% if submitbutton == 'Search' and request.GET.q != '' %}
+                    {% if results %}
+
 
                     {% for result in results %}
 
-                    {{result.publisher}}
-                    <br/>
-
-                    {{result.author}}
-                    <br/>
+                    <div class="ui center aligned column">
+                    <div class="ui item" style="margin: 10px 0px 10px 0px;">
+                      <div class="image" style="margin-bottom: 2px">
+                        <div class="dmt"
+                             data-img="{{ result.cover.url }}"
+                             data-title="{{ result.book_name }}"
+                             data-author="{{ result.author }}"
+                             data-publisher="{{ result.publisher }}"
+                             data-isbn="{{ result.ISBN }}"
+                             data-subject="{{ result.subject }}"
+                             data-language="{{ result.language }}"
+                             data-pages="{{ result.number_of_pages }}"
+                             data-format="{{ result.get_book_format_display }}"
+                             data-status="{{ result.book_status }}"
+                             data-copies="{{ result.copies_available}}"
+                        >
+                            <img src="{{ result.cover.url }}" class="img-responsive" style="height:200px; max-width:400px;">
+                        </div>
+                      </div>
+                      <div class="content">
+                        <a class="header" style="color: #cdd422">{{result.book_name}}</a>
+                        <div class="meta">
+                          <span class="date" style="color: white">{{result.author}}</span>
+                        </div>
+                        <div class="description">
+                        </div>
+                      </div>
+                      <div class="extra content">
+                        <a>
+                        </a>
+                      </div>
+                    </div>
+                    </div>
 
                     {% endfor %}
                     {% else %}
@@ -69,45 +94,7 @@
                     {% endif %}
                     {% endif %}
 
-        {% for book in books %}
 
-            <div class="ui center aligned column">
-            <div class="ui item" style="margin: 10px 0px 10px 0px;">
-              <div class="image" style="margin-bottom: 2px">
-                <div class="dmt"
-                     data-img="{{ book.cover.url }}"
-                     data-title="{{ book.book_name }}"
-                     data-author="{{ book.author }}"
-                     data-publisher="{{ book.publisher }}"
-                     data-isbn="{{ book.ISBN }}"
-                     data-subject="{{ book.subject }}"
-                     data-language="{{ book.language }}"
-                     data-pages="{{ book.number_of_pages }}"
-                     data-format="{{ book.book_format }}"
-                     data-status="{{ book.book_status }}"
-                     data-copies="{{ book.copies_available}}"
-                >
-                    <img src="{{ book.cover.url }}" class="img-responsive" style="height:200px; max-width:400px;">
-                </div>
-              </div>
-              <div class="content">
-                <a class="header" style="color: #cdd422">{{book.book_name}}</a>
-                <div class="meta">
-                  <span class="date" style="color: white">{{book.author}}</span>
-                </div>
-                <div class="description">
-                </div>
-              </div>
-              <div class="extra content">
-                <a>
-                </a>
-              </div>
-            </div>
-            </div>
-
-
-
-        {% endfor %}
         <div class="ui modal" >
               <i class="close icon"></i>
               <div class="header">
@@ -153,6 +140,12 @@
         </div>
         </div>
     </div>
+    <style type="text/css">
+		body {
+			background: url(../../static/img/library-849797_1920.jpg) !important;
+			opacity: 1;
+		}
+	</style>
 {% endblock content %}
 {% block scripts %}
     <script type="text/javascript">

@@ -3,22 +3,24 @@
     <div class="ui hidden divider"></div>
      <div class="ui container" style="margin-bottom: 5px">
         <div class="ui vertical masthead center aligned segment">
-            <div class="ui menu" style="background-color: black">
-              <a class="ui left floated browse item">
+            <div class="ui menu" style="background-color: inherit">
+              <a class="ui left floated browse item" style="background-color: black">
                   <i class="inverted bars icon"></i>
               </a>
-              <div class="ui fluid popup bottom left transition hidden" style="inset: 564.15px auto auto 1px; width: 670px;">
-                <div class="ui one column relaxed divided grid">
-                  <div class="left floated column">
-                    <h4 class="ui header">Fabrics</h4>
-                    <div class="ui link list">
-                      <a class="item">Cashmere</a>
-                      <a class="item">Linen</a>
-                      <a class="item">Cotton</a>
-                      <a class="item">Viscose</a>
-                    </div>
-                  </div>
-
+              <div class="ui popup bottom left transition hidden" style="inset: 564.15px auto auto 1px; width: 200px;">
+                <div class="ui secondary vertical pointing menu">
+                  <a class="centered active item">
+                    Home <i class="home icon"></i>
+                  </a>
+                  {% if user.is_authenticated %}
+                  <a class="item" href="{% url 'dashboards:user_dashboard' %}">
+                    My profile <i class="user circle icon"></i>
+                  </a>
+                    <div class="ui hidden divider"></div>
+                  <a class="item" style="color: orangered" href="{% url 'logout' %}">
+                    Log Out  <i class="sign-out alternate icon"></i>
+                  </a>
+                  {% endif %}
                 </div>
               </div>
               <div class="ui right floated category search item" style="background-color: white">
@@ -33,13 +35,7 @@
 
 
               </div>
-                {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}">
-                    <div class="item" >
-                        <i class="inverted user circle icon"></i>
-                    </div>
-                </a>
-                {% endif %}
+
             </div>
             <div class="ui hidden divider" style="margin-bottom: 2px"></div>
         </div>
@@ -61,8 +57,8 @@
                      data-subject="{{ book.subject }}"
                      data-language="{{ book.language }}"
                      data-pages="{{ book.number_of_pages }}"
-                     data-format="{{ book.book_format }}"
-                     data-status="{{ book.book_status }}"
+                     data-format="{{ book.get_book_format_display }}"
+                     data-status="{{ book.get_book_status_display }}"
                      data-copies="{{ book.copies_available}}"
                 >
                     <img src="{{ book.cover.url }}" class="img-responsive" style="height:200px; max-width:400px;">
@@ -97,7 +93,7 @@
                 </div>
                 <div class="description">
                   <div class="ui header" >
-                      <h3 id="book-name"></h3>
+                      <h3 id="book-name" style="color: #cdd422"></h3>
                   </div>
                   <div class="ui two column grid">
                     <div class="ui column">
@@ -105,12 +101,14 @@
                     <p style="color:#0276FD">Publisher: <span id="book-publisher" style="color:black"></span></p>
                     <p style="color:#0276FD">ISBN: <span id="book-ISBN" style="color:black"></span></p>
                     <p style="color:#0276FD">Genre: <span id="book-genre" style="color:black"></span></p>
+                    <div class="ui hidden divider"></div>
+                    <p style="color:Red">Status:  <span id="book-status" style="color:black"></span><span id="book-copies"></span></p>
                     </div>
                     <div class="ui column">
                     <p style="color:#0276FD">Language: <span id="book-language" style="color:black"></span></p>
                     <p style="color:#0276FD">Format: <span id="book-format" style="color:black"></span></p>
                     <p style="color:#0276FD">Pages: <span id="book-pages" style="color:black"></span></p>
-                    <p style="color:#0276FD">Status: <span id="book-status" style="color:black"></span><span id="book-copies"></span></p>
+
                     </div>
                   </div>
                 </div>
@@ -131,7 +129,12 @@
         </div>
         </div>
     </div>
-	
+	<style type="text/css">
+		body {
+			background: url(../../static/img/library-849797_1920.jpg) !important;
+			opacity: 1;
+		}
+	</style>
 {% endblock content %}
 {% block scripts %}
     <script type="text/javascript">
@@ -157,7 +160,7 @@
             $('#book-language').html($(this).data('language'));
             $('#book-pages').html($(this).data('pages'));
             $('#book-format').html($(this).data('format'));
-            $('#book-status').html($(this).data('status') + "(" + $(this).data('copies') + ")" );
+            $('#book-status').html($(this).data('status') + " (" + $(this).data('copies') + ")" );
 
         });
     </script>

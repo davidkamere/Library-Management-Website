@@ -1,16 +1,123 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
-	<div class="ui hidden divider"></div>
-	<div class="ui hidden divider"></div>
-	<div class="ui hidden divider"></div>
-	<div class="ui hidden divider"></div>
-	<div class="ui container" style="background-color: white; padding: 35px; border-radius: 6px">
+    <div class="ui container" style="margin-bottom: 5px">
+        <div class="ui vertical masthead center aligned segment">
+            <div class="ui menu" style="background-color: inherit">
+              <a class="ui left floated browse item" style="background-color: black">
+                  <i class="inverted bars icon"></i>
+              </a>
+              <div class="ui popup bottom left transition hidden" style="inset: 564.15px auto auto 1px; width: 200px;">
+                <div class="ui secondary vertical pointing menu">
+                  <a class="centered item" href="{% url 'the_collection:index' %}">
+                    Home <i class="home icon"></i>
+                  </a>
+                  {% if user.is_authenticated %}
+                  <a class="active item" href="{% url 'dashboards:user_dashboard' %}">
+                    My profile <i class="user circle icon"></i>
+                  </a>
+                    <div class="ui hidden divider"></div>
+                  <a class="item" style="color: orangered" href="{% url 'logout' %}">
+                    Log Out  <i class="sign-out alternate icon"></i>
+                  </a>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="ui right floated category search item" style="background-color: white">
+                <form action="{% url 'the_collection:search-posts' %}" method="GET" value="{{request.GET.q}} " style="margin: 0">
+                <div class="ui transparent icon input">
+                  <input type="text" class="prompt" name="q" value="{{request.GET.q}}"  placeholder="Search books..."/>
+                  <button class="circular ui icon button" style="background-color: inherit" type="submit" name="submit" value="Search">
+                      <i class="search link icon"></i>
+                  </button>
+                </div>
+                </form>
+
+
+              </div>
+
+            </div>
+
+        </div>
+    </div>
+	<div class="ui container" style=" padding: 35px; border-radius: 6px; margin-top: -18px">
 		<div class="ui fluid container" style="color: black;">
-			<div class="ui container" style="background-color: black">
+			<div class="ui container" style="background-color: black; border-radius: 6px">
              <div class="ui four column stackable center aligned grid" style="padding: 5px 5px 5px 5px !important; margin-top: 5px">
+                  <div class="ui left floated column" style="width: 25%">
+                      <div class="ui card">
+                      <div class="image">
+                        <img src="{% static "media/images/elyse.png"%}" alt="My image">
+                      </div>
+                      <div class="content">
+                        <a class="header">{{ request.user.get_username }}</a>
+                        <div class="meta">
+                          <span class="date">Joined in {{ request.user.date_joined|date:"M d, Y"  }}</span>
+                        </div>
+                        <div class="description">
+                          {{ request.user.email }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ui left floated left aligned column" style="width: 70%">
+                  <div class="left aligned content">
+                    <div class=" description">
+                      <div class="ui left aligned header" style="color: white">
+                          Your Data:
+                      </div>
+
+                      <p style="color: white">Name: <span>{{ request.user.first_name }}</span>  {{ request.user.last_name }}</p>
+                        <p style="color: white">ID Number: <span>{{ request.user.id_number }}</span></p>
+                        <p style="color: white">
+                            Phone Number: <span>{{ request.user.phone_number }}</span><i class="phone icon"></i>
+                        </p>
+
+                    </div>
+                  </div>
+                  <div class="left aligned content">
+                  <div class="ui hidden divider"></div>
+
+                    <div class="ui left aligned header" style="color: white">
+                          Your Due Dates:
+                    </div>
+
+                    {% for book in books %}
+                    <div class=" description">
+
+
+                      <p style="color: white">
+                          <span style="color: #cdd422">{{book.book.book_name}}</span> on <span style="color: orangered">{{book.due_date}}</span></p>
+                      <p style="color: white"></p>
+
+
+                    </div>
+                    {% endfor %}
+                  </div>
+                  </div>
+             </div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="ui container" style="padding: 35px; border-radius: 6px">
+		<div class="ui fluid container" style="color: black;">
+			<div class="ui container" style="background-color: black; border-radius: 6px">
+            <div class="ui hidden divider"></div>
+            <div class="ui left aligned header" style="color: white">
+                <p>  </p>Your Borrowed Books:
+            </div>
+             <div class="ui two column stackable center aligned grid"
+                  style="padding: 5px 5px 5px 5px !important;
+                   margin-top: 5px; margin-bottom: 5px">
+
+
                 {% for book in books %}
 
-                        <div class="ui center aligned column">
+                        <div class="ui center  aligned column">
+
                         <div class="ui item" style="margin: 10px 0px 10px 0px;">
                           <div class="image" style="margin-bottom: 2px">
                             <div class="dmt">
@@ -19,10 +126,12 @@
                           </div>
                           <div class="content">
                             <a class="header" style="color: #cdd422">{{book.book.book_name}}</a>
-                            <div class="meta">
-                              <span class="date" style="color: white">{{book.due_date}}</span>
-                            </div>
                             <div class="description">
+                                <span class="author" style="color: white">{{book.book.author}}</span>
+                            </div>
+                            <div class="meta">
+                                <span style="color: white">Due On: </span>
+                              <span class="date" style="color: orangered">{{book.due_date}}</span>
                             </div>
                           </div>
                           <div class="extra content">
@@ -39,10 +148,26 @@
 			</div>
 		</div>
 	</div>
-	<!--<style type="text/css">
+    <div class="ui hidden divider"></div>
+    <div class="ui hidden divider"></div>
+	<style type="text/css">
 		body {
 			background: url(../../static/img/library-849797_1920.jpg) !important;
 			opacity: 1;
 		}
-	</style>-->
+	</style>
 {% endblock content %}
+{% block scripts %}
+    <script type="text/javascript">
+        $('.menu .browse').popup({
+            inline     : true,
+            hoverable  : true,
+            position   : 'bottom left',
+            delay: {
+              show: 300,
+              hide: 800
+            }
+          })
+        ;
+    </script>
+{% endblock scripts %}
