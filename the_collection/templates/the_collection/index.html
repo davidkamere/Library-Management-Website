@@ -60,6 +60,8 @@
                      data-format="{{ book.get_book_format_display }}"
                      data-status="{{ book.get_book_status_display }}"
                      data-copies="{{ book.copies_available}}"
+                     data-number="{{ book.borrowed.borrowed_by.profile.phone_number }}"
+                     data-book = "{{ book.id }}"
                 >
                     <img src="{{ book.cover.url }}" class="img-responsive" style="height:200px; max-width:400px;">
                 </div>
@@ -113,15 +115,29 @@
                   </div>
                 </div>
               </div>
+
+                <form action="{% url 'dashboards:user_dashboard' %}" method="POST" id="form1">
+                    {% csrf_token %}
+                    <input type="hidden" id="book_name" name="book_name" value="">
+                </form>
+
               <div class="actions">
-                <p>Would you like to reserve this book?</p>
+
+                <p id="message"></p>
                 <div class="ui black deny button">
                   Back
                 </div>
-                <div class="ui positive right labeled icon button">
-                  Reserve
+                  <button  type="" form="form1" class="ui center aligned positive right labeled icon button" id="status">
+                    Reserve
                   <i class="checkmark icon"></i>
-                </div>
+                  </button>
+
+                  <a href="" id="link" class="link" style="color: white; text-decoration: none">
+                      <div class="ui center aligned positive right labeled icon button" id="status_reserved">
+                        Call
+                      <i class="checkmark icon"></i>
+                      </div>
+                  </a>
               </div>
         </div>
 
@@ -160,8 +176,25 @@
             $('#book-language').html($(this).data('language'));
             $('#book-pages').html($(this).data('pages'));
             $('#book-format').html($(this).data('format'));
-            $('#book-status').html($(this).data('status') + " (" + $(this).data('copies') + ")" );
+            $('#book-status').html($(this).data('status'));
 
+            // reservation system
+            if($(this).data('status') === 'Available'){
+                $('.ui.center.aligned.positive.right.labeled.icon.button').show();
+                $("#link").hide();
+                $('#status_reserved').hide();
+                $('#status').attr("type", "submit");
+                $('#message').html('Would you like to reserve this book? ');
+                $("#book_name").attr("value",$(this).data('book'));
+
+            }else{
+                $(".link").show();
+                $('#status').hide();
+                $('#status_reserved').show();
+                $("#link").attr("href","tel:0" + $(this).data('number'));
+                $('#message').html('Would you like to call the borrower?');
+
+            }
         });
     </script>
 {% endblock scripts %}

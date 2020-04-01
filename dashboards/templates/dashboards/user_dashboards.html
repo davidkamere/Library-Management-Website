@@ -68,9 +68,9 @@
                       </div>
 
                       <p style="color: white">Name: <span>{{ request.user.first_name }}</span>  {{ request.user.last_name }}</p>
-                        <p style="color: white">ID Number: <span>{{ request.user.id_number }}</span></p>
+                        <p style="color: white">ID Number: <span>{{ request.user.profile.id_number }}</span></p>
                         <p style="color: white">
-                            Phone Number: <span>{{ request.user.phone_number }}</span><i class="phone icon"></i>
+                            Phone Number:+254 <span>{{ request.user.profile.phone_number }} </span> <i class="phone icon"></i>
                         </p>
 
                     </div>
