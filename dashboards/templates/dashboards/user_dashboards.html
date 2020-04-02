@@ -93,6 +93,7 @@
 
                     </div>
                     {% endfor %}
+
                   </div>
                   </div>
              </div>
@@ -107,7 +108,7 @@
 			<div class="ui container" style="background-color: black; border-radius: 6px">
             <div class="ui hidden divider"></div>
             <div class="ui left aligned header" style="color: white">
-                <p>  </p>Your Borrowed Books:
+                <p>  </p>Your Reserved Books:
             </div>
              <div class="ui two column stackable center aligned grid"
                   style="padding: 5px 5px 5px 5px !important;
@@ -145,6 +146,50 @@
 
                 {% endfor %}
              </div>
+
+            <div class="ui hidden divider"></div>
+            <div class="ui left aligned header" style="color: white">
+                <p>  </p>Books you are currently waiting for:
+            </div>
+             <div class="ui two column stackable center aligned grid"
+                  style="padding: 5px 5px 5px 5px !important;
+                   margin-top: 5px; margin-bottom: 5px">
+
+                {% if waiting %}
+                {% for book in waiting %}
+
+                        <div class="ui center  aligned column">
+
+                        <div class="ui item" style="margin: 10px 0px 10px 0px;">
+                          <div class="image" style="margin-bottom: 2px">
+                            <div class="dmt">
+                                <img src="{{ book.book.cover.url }}" class="img-responsive" style="height:200px; max-width:400px;">
+                            </div>
+                          </div>
+                          <div class="content">
+                            <a class="header" style="color: #cdd422">{{book.book.book_name}}</a>
+                            <div class="description">
+                                <span class="author" style="color: white">{{book.book.author}}</span>
+                            </div>
+                            <div class="meta">
+                                <span style="color: white">Due On: </span>
+                              <span class="date" style="color: orangered"></span>
+                            </div>
+                          </div>
+                          <div class="extra content">
+                            <a>
+                            </a>
+                          </div>
+                        </div>
+                        </div>
+
+
+
+                {% endfor %}
+                {% endif %}
+             </div>
+
+
 			</div>
 		</div>
 	</div>

@@ -9,6 +9,10 @@
 		<div class="ui fluid container" style="color: black;">
 			<div class="ui container">
 				<form method="post">
+                    <div class="ui header">
+                        Fill in the details below to set-up your account
+                    </div>
+                    <div class="ui hidden divider"></div>
 					{% csrf_token %}
 					<div class="form-row">
 					  <div class="form-group col-md-6 mb-0">
@@ -26,15 +30,19 @@
 						{{ form.phone_number|as_crispy_field }}
 					  </div>
 					</div>
-					{{ form.id|as_crispy_field }}
+					{{ form.id_number|as_crispy_field }}
 					{{ form.password1|as_crispy_field }}
 					{{ form.password2|as_crispy_field }}
-
-					<button type="submit" class="btn btn-primary">Sign in</button>
+                    {{ form.check_me_out|as_crispy_field }}
+					<button type="submit" class="btn btn-primary">Sign Up</button>
+                    <div class="ui hidden divider"></div>
 				</form>
 			</div>
 		</div>
+    <div class="ui hidden divider"></div>
 	</div>
+    <div class="ui hidden divider"></div>
+    <div class="ui hidden divider"></div>
 	<style type="text/css">
 		body {
 			background: url(../../static/img/library-849797_1920.jpg) !important;

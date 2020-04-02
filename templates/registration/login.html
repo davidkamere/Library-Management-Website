@@ -12,6 +12,10 @@
         <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
     <form method="post">
+        <div class="ui header">
+            Fill in the details below to log-in
+        </div>
+        <div class="ui hidden divider"></div>
       {% csrf_token %}
       {{ form|crispy }}
       <button type="submit" class="btn btn-primary">Login</button>

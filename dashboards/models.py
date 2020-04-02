@@ -10,7 +10,11 @@ def get_due_date():
 
 
 class Waiting(models.Model):
+    book = models.OneToOneField(Book, on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "%s" % self.book.book_name
 
 
 class Borrowed(models.Model):

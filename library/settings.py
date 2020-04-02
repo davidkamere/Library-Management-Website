@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+import django_heroku
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -121,12 +121,14 @@ USE_TZ = True
 
 # login redirect
 LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/accounts/login'
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-STATICFILES_DIRS = ( os.path.join('static'), )
+STATICFILES_DIRS = (os.path.join('static'), )
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'the_collection/static/media')
 MEDIA_URL = '/media/'
@@ -135,5 +137,7 @@ MEDIA_URL = '/media/'
 # Framework for crispy forms
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
+# heroku setting
+django_heroku.settings(locals())
 
 

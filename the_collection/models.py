@@ -40,6 +40,7 @@ class Book(models.Model):
     STATUS_CHOICES = (
         (1, "Available"),
         (2, "Borrowed"),
+        (3, "Reserved"),
     )
 
     book_name = models.CharField(max_length=500, blank=True, null=True)

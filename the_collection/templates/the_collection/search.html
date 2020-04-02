@@ -27,7 +27,7 @@
                 <form action="{% url 'the_collection:search-posts' %}" method="GET" value="{{request.GET.q}} " style="margin: 0">
                 <div class="ui transparent icon input">
                   <input type="text" class="prompt" name="q" value="{{request.GET.q}}"  placeholder="Search books..."/>
-                  <button class="circular ui icon button" style="background-color: inherit">
+                  <button class="circular ui icon button" style="background-color: inherit" type="submit" name="submit" value="Search">
                       <i class="search link icon"></i>
                   </button>
                 </div>
@@ -67,7 +67,7 @@
                              data-language="{{ result.language }}"
                              data-pages="{{ result.number_of_pages }}"
                              data-format="{{ result.get_book_format_display }}"
-                             data-status="{{ result.book_status }}"
+                             data-status="{{ result.get_book_status_display }}"
                              data-copies="{{ result.copies_available}}"
                         >
                             <img src="{{ result.cover.url }}" class="img-responsive" style="height:200px; max-width:400px;">
@@ -114,16 +114,19 @@
                     <p style="color:#0276FD">Publisher: <span id="book-publisher" style="color:black"></span></p>
                     <p style="color:#0276FD">ISBN: <span id="book-ISBN" style="color:black"></span></p>
                     <p style="color:#0276FD">Genre: <span id="book-genre" style="color:black"></span></p>
+                    <div class="ui hidden divider"></div>
+                    <p style="color:Red">Status:  <span id="book-status" style="color:black"></span><span id="book-copies"></span></p>
                     </div>
                     <div class="ui column">
                     <p style="color:#0276FD">Language: <span id="book-language" style="color:black"></span></p>
                     <p style="color:#0276FD">Format: <span id="book-format" style="color:black"></span></p>
                     <p style="color:#0276FD">Pages: <span id="book-pages" style="color:black"></span></p>
-                    <p style="color:#0276FD">Status: <span id="book-status" style="color:black"></span><span id="book-copies"></span></p>
+
                     </div>
                   </div>
                 </div>
               </div>
+              {% if user.is_authenticated %}
               <div class="actions">
                 <p>Would you like to reserve this book?</p>
                 <div class="ui black deny button">
@@ -134,6 +137,13 @@
                   <i class="checkmark icon"></i>
                 </div>
               </div>
+              {% else %}
+
+                  <a style="margin-right: 25px" href="{% url 'users:register' %}" class="ui center aligned positive right floated labeled icon button" id="status_reserved">
+                        Sign up to Borrow/Reserve books
+
+                  </a>
+              {% endif %}
         </div>
 
 
@@ -171,7 +181,7 @@
             $('#book-language').html($(this).data('language'));
             $('#book-pages').html($(this).data('pages'));
             $('#book-format').html($(this).data('format'));
-            $('#book-status').html($(this).data('status') + "(" + $(this).data('copies') + ")" );
+            $('#book-status').html($(this).data('status'));
 
         });
     </script>

@@ -116,35 +116,71 @@
                 </div>
               </div>
 
-                <form action="{% url 'dashboards:user_dashboard' %}" method="POST" id="form1">
+                <form action="{% url 'dashboards:user_dashboard' %}" method="POST" id="form1" >
                     {% csrf_token %}
                     <input type="hidden" id="book_name" name="book_name" value="">
                 </form>
-
+                <form action="{% url 'dashboards:user_dashboard' %}" method="POST" id="form2" >
+                    {% csrf_token %}
+                    <input type="hidden" id="book_name2" name="book_name2" value="">
+                </form>
+              {% if user.is_authenticated %}
               <div class="actions">
 
                 <p id="message"></p>
                 <div class="ui black deny button">
                   Back
                 </div>
-                  <button  type="" form="form1" class="ui center aligned positive right labeled icon button" id="status">
+                  <button  type="submit" form="form1" class="ui center aligned positive right labeled icon button" id="status" name="">
                     Reserve
                   <i class="checkmark icon"></i>
                   </button>
 
                   <a href="" id="link" class="link" style="color: white; text-decoration: none">
                       <div class="ui center aligned positive right labeled icon button" id="status_reserved">
-                        Call
+                        Reach Out
                       <i class="checkmark icon"></i>
                       </div>
                   </a>
+                  <button  type="submit" form="form2" class="ui center aligned positive right labeled icon button" id="waiting" name="">
+                    Add to waiting list
+                  <i class="checkmark icon"></i>
+                  </button>
               </div>
+              {% else %}
+
+                  <a style="margin-right: 25px" href="{% url 'users:register' %}" class="ui center aligned positive right floated labeled icon button" id="status_reserved">
+                        Sign up to Borrow/Reserve books
+
+                  </a>
+              {% endif %}
         </div>
 
 
         </div>
+
+        <div class="ui right aligned container" style="margin-bottom: 20px; margin-top: -10px">
+            <div class="ui inverted pagination menu" style="margin-bottom: 20px">
+                {% if books.has_previous %}
+                    <!--<a href="?page=1">&laquo; first</a>-->
+                    <a href="?page={{ books.previous_page_number }}" class="ui item"><i class="angle double left icon"></i></a>
+                {% endif %}
+
+                <div class="ui item">
+                    Page {{ books.number }} / {{ books.paginator.num_pages }}
+                </div>
+
+                {% if entries.has_next %}
+                    <a href="?page={{ books.next_page_number }}" class="ui item" ><i class="angle double right icon"></i></a>
+                    <!--<a href="?page={{ books.paginator.num_pages }}">last &raquo;</a>-->
+                {% endif %}
+            </div>
         </div>
     </div>
+
+    </div>
+    <div class="ui hidden divider"></div>
+    <div class="ui hidden divider"></div>
 	<style type="text/css">
 		body {
 			background: url(../../static/img/library-849797_1920.jpg) !important;
@@ -182,12 +218,21 @@
             if($(this).data('status') === 'Available'){
                 $('.ui.center.aligned.positive.right.labeled.icon.button').show();
                 $("#link").hide();
+                $("#waiting").hide();
                 $('#status_reserved').hide();
-                $('#status').attr("type", "submit");
+                $('#status').attr("name", "reserve");
                 $('#message').html('Would you like to reserve this book? ');
                 $("#book_name").attr("value",$(this).data('book'));
 
+            }else if ($(this).data('status') === 'Reserved') {
+                $("#waiting").show();
+                $('#status').hide();
+                $("#link").hide();
+                $('#message').html('Currently reserved....Check again after 24 hours');
+                $('#waiting').attr("name", "waiting");
+                $("#book_name2").attr("value",$(this).data('book'));
             }else{
+                $("#waiting").hide();
                 $(".link").show();
                 $('#status').hide();
                 $('#status_reserved').show();
