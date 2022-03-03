@@ -1,2 +1,2 @@
 
-Library Management System built using **Django**
+**Library Management System** built using **Django**
